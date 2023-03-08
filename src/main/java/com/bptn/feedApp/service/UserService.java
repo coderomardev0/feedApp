@@ -1,6 +1,9 @@
 package com.bptn.feedApp.service;
 
 import org.springframework.stereotype.Service;
+import com.bptn.feedApp.repository.UserRepository;
+import com.bptn.feedApp.jpa.User;
+import java.util.Optional;
 
 import java.util.List;
 
@@ -10,19 +13,24 @@ import com.bptn.feedApp.jdbc.UserBean;
 
 @Service
 public class UserService {
+	// @Autowired
+	// UserDao userDao;
+	
 	@Autowired
-	UserDao userDao;
+	UserRepository userRepository;
 	
-	public List<UserBean> listUsers() {
-		return this.userDao.listUsers();
+	public List<User> listUsers() {
+		return this.userRepository.findAll();
 	}
 	
-	public UserBean findByUsername(String username) {
-		return this.userDao.findByUsername(username);
+	// public UserBean findByUsername(String username) {
+	public Optional<User> findByUsername(String username) {
+		return this.userRepository.findByUsername(username);
 	}
 	
-	public void createUser(UserBean user) {
-		this.userDao.createUser(user);
+	// public void createUser(UserBean user) {
+	public void createUser(User user) {
+		this.userRepository.save(user);
 	}
 
 }
