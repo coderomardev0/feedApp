@@ -1,6 +1,7 @@
 package com.bptn.feedApp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,9 @@ import java.util.List;
 
 import com.bptn.feedApp.jpa.User;
 import java.util.Optional;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/user")
@@ -70,6 +74,12 @@ public class UserController {
 		this.userService.createUser(user);
 				
 		return "User Created Successfully";
+	}
+	
+	@PostMapping("/signup")
+	public User signup(@RequestBody User user) {	
+		logger.debug("Signing up, username: {}", user.getUsername());
+		return this.userService.signup(user);
 	}
 	
 }
