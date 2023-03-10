@@ -22,6 +22,9 @@ public class UserService {
 	
 	@Autowired
 	UserRepository userRepository;
+	    
+	@Autowired
+	EmailService emailService;
 	
 	public List<User> listUsers() {
 		return this.userRepository.findAll();
@@ -46,9 +49,11 @@ public class UserService {
 		user.setCreatedOn(Timestamp.from(Instant.now()));
 		
 		this.userRepository.save(user);
+	    
+		this.emailService.sendVerificationEmail(user);
 		
 		return user;
 		
 	}
-
+	
 }
