@@ -57,4 +57,16 @@ spring:
     hibernate:
       ddl-auto: validate
       
-
+# Email Settings
+  mail:
+    username: <add your gmail ID>
+    password: <add your password>
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
