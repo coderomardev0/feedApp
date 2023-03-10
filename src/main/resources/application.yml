@@ -59,8 +59,8 @@ spring:
       
 # Email Settings
   mail:
-    username: <add your gmail ID>
-    password: <add your password>
+    username: omarbptn@gmail.com
+    password: zurpyrfasxntdlgl
     host: smtp.gmail.com
     port: 587
     protocol: smtp
