@@ -29,10 +29,14 @@ import com.bptn.feedApp.provider.ResourceProvider;
 import com.bptn.feedApp.security.JwtService;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import org.springframework.http.HttpHeaders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Service
 public class UserService {
+
+	final Logger logger = LoggerFactory.getLogger(this.getClass());
 	// @Autowired
 	// UserDao userDao;
 	
@@ -154,5 +158,18 @@ public class UserService {
 
 		return headers;
 	}
+	
+	public void sendResetPasswordEmail(String emailId) {
+
+		Optional<User> opt = this.userRepository.findByEmailId(emailId);
+
+		if (opt.isPresent()) {
+			this.emailService.sendResetPasswordEmail(opt.get());
+		} else {
+			logger.debug("Email doesn't exist, {}", emailId);
+		}
+	}
+	
+	
 	
 }
