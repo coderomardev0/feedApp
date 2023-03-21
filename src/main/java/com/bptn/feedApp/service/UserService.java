@@ -15,6 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Timestamp;
 import java.time.Instant;
 
+import com.bptn.feedApp.exception.domain.EmailExistException;
+import com.bptn.feedApp.exception.domain.UsernameExistException;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Service
 public class UserService {
 	// @Autowired
@@ -25,6 +30,9 @@ public class UserService {
 	    
 	@Autowired
 	EmailService emailService;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	public List<User> listUsers() {
 		return this.userRepository.findAll();
@@ -40,7 +48,25 @@ public class UserService {
 		this.userRepository.save(user);
 	}
 	
-	public User signup(User user){
+	public User signup(User user) {
+
+		user.setUsername(user.getUsername().toLowerCase());
+		user.setEmailId(user.getEmailId().toLowerCase());
+
+		this.validateUsernameAndEmail(user.getUsername(), user.getEmailId());
+
+		user.setEmailVerified(false);
+		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+		user.setCreatedOn(Timestamp.from(Instant.now()));
+
+		this.emailService.sendVerificationEmail(user);
+
+		this.userRepository.save(user);
+		return user;
+
+}
+	
+	/* public User signup(User user){
 		user.setUsername(user.getUsername().toLowerCase());
 		user.setEmailId(user.getEmailId().toLowerCase());
 		
@@ -54,6 +80,18 @@ public class UserService {
 		
 		return user;
 		
+	} */
+	
+	private void validateUsernameAndEmail(String username, String emailId) {
+
+		this.userRepository.findByUsername(username).ifPresent(u -> {
+			throw new UsernameExistException(String.format("Username already exists, %s", u.getUsername()));
+		});
+
+		this.userRepository.findByEmailId(emailId).ifPresent(u -> {
+			throw new EmailExistException(String.format("Email already exists, %s", u.getEmailId()));
+		});
+
 	}
 	
 }
