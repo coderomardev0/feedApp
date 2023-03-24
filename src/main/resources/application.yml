@@ -37,6 +37,20 @@ spring:
         '[format_sql]': true        
     hibernate:
       naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+# Email Settings
+  mail:
+    username: omarbptn@gmail.com
+    password: zurpyrfasxntdlgl
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
       
 ---
 
@@ -57,20 +71,6 @@ spring:
     hibernate:
       ddl-auto: validate
       
-# Email Settings
-  mail:
-    username: omarbptn@gmail.com
-    password: zurpyrfasxntdlgl
-    host: smtp.gmail.com
-    port: 587
-    protocol: smtp
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
 ---      
 # Prod Profile
 server:
